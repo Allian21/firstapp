@@ -1,16 +1,36 @@
 import React, { useState } from 'react';
-import { StyleSheet, Text, View, Image, Dimensions, ScrollView } from 'react-native';
+import { StyleSheet, Text, View, Image, Dimensions, ScrollView, Button } from 'react-native';
 import { NavigationContainer } from '@react-navigation/native';
 import { createStackNavigator } from '@react-navigation/stack';
 import { PanGestureHandler } from 'react-native-gesture-handler';
 
-
 const screenWidth = Dimensions.get('window').width;
 const screenHeight = Dimensions.get('window').height;
 
-//homescreen or menu makit an ang letters
+// Main Menu Screen
+function MainMenuScreen({ navigation }) {
+  return (
+    <View style={styles.mainMenuContainer}>
+      <Text style={styles.title}>Alphabet Learning App</Text>
+      <View style={styles.buttonContainer}>
+        <Button
+          title="Start (A)"
+          onPress={() => navigation.navigate('Alphabet', { letter: 'A' })}
+        />
+      </View>
+      <View style={styles.buttonContainer}>
+        <Button
+          title="Selection"
+          onPress={() => navigation.navigate('Home')}
+        />
+      </View>
+    </View>
+  );
+}
+
+// Home Screen to display alphabet letters
 function HomeScreen({ navigation }) {
-  const alphabet = 'ABCDEFGHIJKLMNOPQRSTUVWXYZ'.split(''); // All letters
+  const alphabet = 'ABCDEFGHIJKLMNOPQRSTUVWXYZ'.split('');
 
   return (
     <ScrollView contentContainerStyle={styles.scrollContainer}>
@@ -19,7 +39,7 @@ function HomeScreen({ navigation }) {
           <View key={letter} style={styles.letterContainer}>
             <Text
               style={styles.letter}
-              onPress={() => navigation.navigate('AlphabetDetail', { letter })}
+              onPress={() => navigation.navigate('Alphabet', { letter })}
             >
               {letter}
             </Text>
@@ -31,13 +51,11 @@ function HomeScreen({ navigation }) {
 }
 
 // Alphabet Detail screen with swipe feature
-function AlphabetDetailScreen({ route, navigation }) {
+function AlphabetDetailScreen({ route }) {
   const { letter: initialLetter } = route.params;
   const alphabet = 'ABCDEFGHIJKLMNOPQRSTUVWXYZ'.split('');
   const [currentLetterIndex, setCurrentLetterIndex] = useState(alphabet.indexOf(initialLetter));
 
-  // Mapping of letters to words and images (A-Z)
-  // add lang diri tung words(3 nlng kulang each letter) each letter
   const wordImageMap = {
     A: { word: 'Apple', image: require('./assets/apple.png') },
     B: { word: 'Banana', image: require('./assets/banana.png') },
@@ -67,27 +85,24 @@ function AlphabetDetailScreen({ route, navigation }) {
     Z: { word: 'Zebra', image: require('./assets/zebra.png') },
   };
 
-  // Handle swipe gesture (left and right)
   const onSwipe = (event) => {
     const { translationX } = event.nativeEvent;
     if (translationX < -50 && currentLetterIndex < alphabet.length - 1) {
-      setCurrentLetterIndex(currentLetterIndex + 1); // Swipe left, go to next letter
+      setCurrentLetterIndex(currentLetterIndex + 1);
     } else if (translationX > 50 && currentLetterIndex > 0) {
-      setCurrentLetterIndex(currentLetterIndex - 1); // Swipe right, go to previous letter
+      setCurrentLetterIndex(currentLetterIndex - 1);
     }
   };
 
   const currentLetter = alphabet[currentLetterIndex];
-  const { word, image } = wordImageMap[currentLetter]; // Get word and image for the current letter
+  const { word, image } = wordImageMap[currentLetter];
 
   return (
     <PanGestureHandler onGestureEvent={onSwipe}>
       <ScrollView contentContainerStyle={styles.detailContainer}>
-        {/* Letter at top left */}
-        <View style={styles.topLeftLetter}>
-          <Text style={styles.letterTopLeft}>{currentLetter}</Text>
+        <View style={styles.topCenterLetter}>
+          <Text style={styles.letterTopCenter}>{currentLetter}</Text>
         </View>
-        {/* Word and image in the center */}
         <View style={styles.wordContainer}>
           <Image source={image} style={styles.image} />
           <Text style={styles.wordText}>{word}</Text>
@@ -103,9 +118,10 @@ const Stack = createStackNavigator();
 export default function App() {
   return (
     <NavigationContainer>
-      <Stack.Navigator initialRouteName="Home">
+      <Stack.Navigator initialRouteName="MainMenu">
+        <Stack.Screen name="Main Menu" component={MainMenuScreen} />
         <Stack.Screen name="Home" component={HomeScreen} />
-        <Stack.Screen name="AlphabetDetail" component={AlphabetDetailScreen} />
+        <Stack.Screen name="Alphabet" component={AlphabetDetailScreen} />
       </Stack.Navigator>
     </NavigationContainer>
   );
@@ -113,7 +129,7 @@ export default function App() {
 
 const styles = StyleSheet.create({
   scrollContainer: {
-    flexGrow: 1, 
+    flexGrow: 1,
     justifyContent: 'center',
     alignItems: 'center',
   },
@@ -121,22 +137,22 @@ const styles = StyleSheet.create({
     flex: 1,
     flexDirection: 'row',
     flexWrap: 'wrap',
-    justifyContent: 'center', 
+    justifyContent: 'center',
     alignItems: 'center',
     backgroundColor: '#fff',
     padding: 20,
   },
   letterContainer: {
-    width: screenWidth / 4.5, 
+    width: screenWidth / 4.5,
     height: screenWidth / 4.5,
     justifyContent: 'center',
     alignItems: 'center',
-    borderWidth: 2, 
-    borderColor: '#000', 
-    margin: 10, 
+    borderWidth: 2,
+    borderColor: '#000',
+    margin: 10,
   },
   letter: {
-    fontSize: 40, 
+    fontSize: 40,
     fontWeight: 'bold',
   },
   detailContainer: {
@@ -145,12 +161,14 @@ const styles = StyleSheet.create({
     alignItems: 'center',
     backgroundColor: '#fff',
   },
-  topLeftLetter: {
+  topCenterLetter: {
     position: 'absolute',
     top: 20,
-    left: 20, 
+    width: '100%',
+    justifyContent: 'center',
+    alignItems: 'center',
   },
-  letterTopLeft: {
+  letterTopCenter: {
     fontSize: 60,
     fontWeight: 'bold',
   },
@@ -167,5 +185,20 @@ const styles = StyleSheet.create({
   wordText: {
     fontSize: 24,
     fontWeight: 'bold',
+  },
+  mainMenuContainer: {
+    flex: 1,
+    justifyContent: 'center',
+    alignItems: 'center',
+    backgroundColor: '#fff',
+  },
+  title: {
+    fontSize: 32,
+    fontWeight: 'bold',
+    marginBottom: 40,
+  },
+  buttonContainer: {
+    marginVertical: 15,
+    width: '70%',
   },
 });
