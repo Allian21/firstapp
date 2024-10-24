@@ -83,6 +83,7 @@ function AlphabetDetailScreen({ route, navigation }) {
     X: { word: 'Xylophone', image: require('./assets/xylophone.png') },
     Y: { word: 'Yacht', image: require('./assets/yacht.png') },
     Z: { word: 'Zebra', image: require('./assets/zebra.png') },
+    //LASDIJISAJDSAJDGASYGYUDIASJOD
   
   };
   //test
