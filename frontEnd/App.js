@@ -2,10 +2,8 @@ import React, { useState } from 'react';
 import { StyleSheet, Text, View, Image, Dimensions, ScrollView, Button } from 'react-native';
 import { NavigationContainer } from '@react-navigation/native';
 import { createStackNavigator } from '@react-navigation/stack';
-import { PanGestureHandler } from 'react-native-gesture-handler';
 
 const screenWidth = Dimensions.get('window').width;
-const screenHeight = Dimensions.get('window').height;
 
 // Main Menu Screen
 function MainMenuScreen({ navigation }) {
@@ -50,14 +48,16 @@ function HomeScreen({ navigation }) {
   );
 }
 
-// Alphabet Detail screen with swipe feature
-function AlphabetDetailScreen({ route }) {
+// Alphabet Detail screen with swipe feature and check/wrong functionality
+function AlphabetDetailScreen({ route, navigation }) {
   const { letter: initialLetter } = route.params;
-  const alphabet = 'ABCDEFGHIJKLMNOPQRSTUVWXYZ'.split('');
-  const [currentLetterIndex, setCurrentLetterIndex] = useState(alphabet.indexOf(initialLetter));
-
   const wordImageMap = {
-    A: { word: 'Apple', image: require('./assets/apple.png') },
+    A: [
+      { word: 'Apple', image: require('./assets/apple.png') },
+      { word: 'Ant', image: require('./assets/Ant.png') },
+      { word: 'Alligator', image: require('./assets/Alligator.png') },
+      { word: 'Airplane', image: require('./assets/Airplane.png') },
+    ],
     B: { word: 'Banana', image: require('./assets/banana.png') },
     C: { word: 'Cat', image: require('./assets/cat.png') },
     D: { word: 'Dog', image: require('./assets/dog.png') },
@@ -83,32 +83,70 @@ function AlphabetDetailScreen({ route }) {
     X: { word: 'Xylophone', image: require('./assets/xylophone.png') },
     Y: { word: 'Yacht', image: require('./assets/yacht.png') },
     Z: { word: 'Zebra', image: require('./assets/zebra.png') },
+  
   };
 
-  const onSwipe = (event) => {
-    const { translationX } = event.nativeEvent;
-    if (translationX < -50 && currentLetterIndex < alphabet.length - 1) {
-      setCurrentLetterIndex(currentLetterIndex + 1);
-    } else if (translationX > 50 && currentLetterIndex > 0) {
-      setCurrentLetterIndex(currentLetterIndex - 1);
+  const [wordIndex, setWordIndex] = useState(0);
+  const [wrongTries, setWrongTries] = useState(0);
+
+  const words = wordImageMap[initialLetter] || [];
+  const currentWord = words[wordIndex];
+
+  const handleCheck = () => {
+    if (wordIndex < words.length - 1) {
+      setWordIndex(wordIndex + 1);
+      setWrongTries(0); // Reset wrong tries for the new word
+    } else {
+      // Move to the next letter if current letter's words are exhausted
+      const nextLetter = String.fromCharCode(initialLetter.charCodeAt(0) + 1);
+      if (nextLetter <= 'Z'&& navigation) {
+        navigation.navigate('Alphabet', { letter: nextLetter });
+      } else {
+        console.log("You've completed the alphabet!");
+        // Optionally navigate to a completion screen or reset
+      }
     }
   };
 
-  const currentLetter = alphabet[currentLetterIndex];
-  const { word, image } = wordImageMap[currentLetter];
+  const handleWrong = () => {
+    if (wrongTries < 2) {
+      setWrongTries(wrongTries + 1);
+    } else {
+      // After 3 wrong tries, move to the next word
+      setWrongTries(0);
+      if (wordIndex < words.length - 1) {
+        setWordIndex(wordIndex + 1);
+      } else {
+        // Move to the next letter if current letter's words are exhausted
+        const nextLetter = String.fromCharCode(initialLetter.charCodeAt(0) + 1);
+        if (nextLetter <= 'Z'&&navigation) {
+          navigation.navigate('Alphabet', { letter: nextLetter });
+        } else {
+          console.log("You've completed the alphabet!");
+          // Optionally navigate to a completion screen or reset
+        }
+      }
+    }
+  };
 
   return (
-    <PanGestureHandler onGestureEvent={onSwipe}>
-      <ScrollView contentContainerStyle={styles.detailContainer}>
-        <View style={styles.topCenterLetter}>
-          <Text style={styles.letterTopCenter}>{currentLetter}</Text>
-        </View>
-        <View style={styles.wordContainer}>
-          <Image source={image} style={styles.image} />
-          <Text style={styles.wordText}>{word}</Text>
-        </View>
-      </ScrollView>
-    </PanGestureHandler>
+    <View style={styles.detailContainer}>
+      <View style={styles.topCenterLetter}>
+        <Text style={styles.letterTopCenter}>{initialLetter}</Text>
+      </View>
+      <View style={styles.wordContainer}>
+        {currentWord && (
+          <>
+            <Image source={currentWord.image} style={styles.image} />
+            <Text style={styles.wordText}>{currentWord.word}</Text>
+          </>
+        )}
+      </View>
+      <View style={styles.buttonContainer}>
+        <Button title="Check" onPress={handleCheck} />
+        <Button title="Wrong" onPress={handleWrong} />
+      </View>
+    </View>
   );
 }
 
@@ -200,5 +238,7 @@ const styles = StyleSheet.create({
   buttonContainer: {
     marginVertical: 15,
     width: '70%',
+    flexDirection: 'row',
+    justifyContent: 'space-between',
   },
 });

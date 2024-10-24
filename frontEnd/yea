@@ -1,1 +1,36 @@
 //Comment
+
+/** const wordImageMap = {
+    A: [
+      { word: 'Apple', image: require('./assets/apple.png') },
+      { word: 'Ant', image: require('./assets/Ant.png') },
+      { word: 'Alligator', image: require('./assets/Alligator.png') },
+      { word: 'Airplane', image: require('./assets/Airplane.png') },
+    ],
+    B: { word: 'Banana', image: require('./assets/banana.png') },
+    C: { word: 'Cat', image: require('./assets/cat.png') },
+    D: { word: 'Dog', image: require('./assets/dog.png') },
+    E: { word: 'Elephant', image: require('./assets/elephant.png') },
+    F: { word: 'Fish', image: require('./assets/fish.png') },
+    G: { word: 'Giraffe', image: require('./assets/giraffe.png') },
+    H: { word: 'Horse', image: require('./assets/horse.png') },
+    I: { word: 'Ice Cream', image: require('./assets/ice_cream.png') },
+    J: { word: 'Juice', image: require('./assets/juice.png') },
+    K: { word: 'Kite', image: require('./assets/kite.png') },
+    L: { word: 'Lion', image: require('./assets/lion.png') },
+    M: { word: 'Monkey', image: require('./assets/monkey.png') },
+    N: { word: 'Nest', image: require('./assets/nest.png') },
+    O: { word: 'Orange', image: require('./assets/orange.png') },
+    P: { word: 'Penguin', image: require('./assets/penguin.png') },
+    Q: { word: 'Queen', image: require('./assets/queen.png') },
+    R: { word: 'Rabbit', image: require('./assets/rabbit.png') },
+    S: { word: 'Sun', image: require('./assets/sun.png') },
+    T: { word: 'Tiger', image: require('./assets/tiger.png') },
+    U: { word: 'Umbrella', image: require('./assets/umbrella.png') },
+    V: { word: 'Violin', image: require('./assets/violin.png') },
+    W: { word: 'Whale', image: require('./assets/whale.png') },
+    X: { word: 'Xylophone', image: require('./assets/xylophone.png') },
+    Y: { word: 'Yacht', image: require('./assets/yacht.png') },
+    Z: { word: 'Zebra', image: require('./assets/zebra.png') },
+  };
+*/
