@@ -85,6 +85,7 @@ function AlphabetDetailScreen({ route, navigation }) {
     Z: { word: 'Zebra', image: require('./assets/zebra.png') },
   
   };
+  //test
 
   const [wordIndex, setWordIndex] = useState(0);
   const [wrongTries, setWrongTries] = useState(0);
@@ -164,6 +165,7 @@ export default function App() {
     </NavigationContainer>
   );
 }
+ 
 
 const styles = StyleSheet.create({
   scrollContainer: {
