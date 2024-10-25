@@ -7,6 +7,7 @@ import dotenv from 'dotenv';
 const { Pool } = pkg;
 
 const app = express()
+const port = 4000;
 
 const pool = new Pool({
   host: process.env.DB_HOST,
