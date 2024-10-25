@@ -9,6 +9,14 @@ const { Pool } = pkg;
 const app = express()
 const port = 4000;
 
+const pool = new Pool({
+  host: process.env.DB_HOST,
+  port: process.env.DB_PORT,
+  database: process.env.DB_DATABASE,
+  user: process.env.DB_USERNAME,
+  password: process.env.DB_PASSWORD,
+});
+
 // Function to initialize the database and insert sample data
 async function initDatabase() {
   try {
