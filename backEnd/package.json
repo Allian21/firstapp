@@ -1,9 +1,10 @@
 {
   "name": "firstapp-backend",
   "version": "1.0.0",
-  "main": "index.js", 
+  "main": "index.js",
+  "type": "module", 
   "scripts": {
-    "start": "node index.js" 
+    "start": "node index.js"
   },
   "dependencies": {
     "body-parser": "^1.20.3",
