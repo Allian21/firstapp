@@ -1,0 +1,3 @@
+postgresql://studentdata_bs76_user:rl1RJ0EEfxWDKfV10xuBwkQY4LpOh84B@dpg-
+csdmvopu0jms73a665fg-a.singapore-postgres.render.com
+/studentdata_bs76
