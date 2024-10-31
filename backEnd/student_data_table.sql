@@ -7,4 +7,3 @@ CREATE TABLE "public"."student_data_table" (
     "student_name" varchar NOT NULL,
     "student_score" int4 NOT NULL
 );
-
